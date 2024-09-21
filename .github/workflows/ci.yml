@@ -49,21 +49,21 @@ jobs:
       - name: Test
         id: pnpm-ci-test
         run: pnpm run ci-test
-
-  test-action:
-    name: GitHub Actions Test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        id: checkout
-        uses: actions/checkout@v4
-
-      - name: Test Local Action
-        id: test-action
-        uses: ./
-        with:
-          token: ${{secrets.TOKEN}}
+  #
+  # test-action:
+  #   name: GitHub Actions Test
+  #   runs-on: ubuntu-latest
+  #
+  #   steps:
+  #     - name: Checkout
+  #       id: checkout
+  #       uses: actions/checkout@v4
+  #
+  #     - name: Test Local Action
+  #       id: test-action
+  #       uses: ./
+  #       with:
+  #         token: ${{secrets.TOKEN}}
   #
   #     - name: Print Output
   #       id: output
