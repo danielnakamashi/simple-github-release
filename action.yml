@@ -1,4 +1,4 @@
-name: 'Simple Github release'
+name: 'Simple Github release from package.json'
 description:
   'Creates a release tag in Github based on package.json version number'
 author: 'Daniel Nakamashi <dnakamashi@gmail.com>'
