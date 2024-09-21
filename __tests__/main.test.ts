@@ -70,11 +70,11 @@ describe('action', () => {
     expect(createReleaseMock).toHaveBeenNthCalledWith(1, {
       draft: false,
       generate_release_notes: true,
-      name: '0.0.0',
+      name: packagejson.version,
       owner: 'owner',
       prerelease: false,
       repo: 'repo',
-      tag_name: '0.0.0'
+      tag_name: packagejson.version
     })
   })
 
