@@ -7,6 +7,12 @@ branding:
   icon: 'package'
   color: 'blue'
 
+# Define your inputs here.
+inputs:
+  token:
+    description: 'Token that allows the creation of releases'
+    required: true
+
 runs:
   using: node20
   main: dist/index.js
