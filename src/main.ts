@@ -1,5 +1,7 @@
 import * as core from '@actions/core'
-import { wait } from './wait'
+import { context, getOctokit } from '@actions/github'
+import fs from 'fs-extra'
+import path from 'node:path'
 
 /**
  * The main function for the action.
@@ -7,20 +9,41 @@ import { wait } from './wait'
  */
 export async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
+    const packageJson = getPackageJson() as { version: string }
+    const version = packageJson.version.toString()
+    core.debug(`Version from package.json: ${version}`)
 
-    // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-    core.debug(`Waiting ${ms} milliseconds ...`)
+    const token = core.getInput('token')
 
-    // Log the current timestamp, wait, then log the new timestamp
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    if (!token) {
+      throw new Error('input token is not set')
+    }
 
-    // Set outputs for other workflow steps to use
-    core.setOutput('time', new Date().toTimeString())
+    await getOctokit(token).rest.repos.createRelease({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      tag_name: version,
+      name: version,
+      draft: false,
+      prerelease: false,
+      generate_release_notes: true
+    })
   } catch (error) {
     // Fail the workflow run if an error occurs
     if (error instanceof Error) core.setFailed(error.message)
   }
+}
+
+function getPackageJson(): unknown {
+  const pathToPackage = path.join(
+    process.env.GTHUB_WORKSPACE ?? '',
+    'package.json'
+  )
+  core.debug(`Path to package.json: ${pathToPackage}`)
+
+  if (!fs.existsSync(pathToPackage)) {
+    throw new Error(`Could not find the package.json file: ${pathToPackage}`)
+  }
+
+  return fs.readJSONSync(pathToPackage)
 }
