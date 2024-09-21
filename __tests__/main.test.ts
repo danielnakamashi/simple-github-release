@@ -47,7 +47,7 @@ describe('action', () => {
 
   it('creates a release', async () => {
     // Set the action's inputs as return values from core.getInput()
-    ; (core.getInput as jest.Mock).mockImplementation(() => {
+    ;(core.getInput as jest.Mock).mockImplementation(() => {
       return token
     })
 
@@ -80,7 +80,7 @@ describe('action', () => {
 
   it('should fail if token is not passed', async () => {
     // Set the action's inputs as return values from core.getInput()
-    ; (core.getInput as jest.Mock).mockImplementation(() => {
+    ;(core.getInput as jest.Mock).mockImplementation(() => {
       return ''
     })
 
@@ -94,9 +94,9 @@ describe('action', () => {
 
   it('should fail if package.json is not found', async () => {
     process.env.GTHUB_WORKSPACE = 'inexistent/dir'
-      ; (core.getInput as jest.Mock).mockImplementation(() => {
-        return token
-      })
+    ;(core.getInput as jest.Mock).mockImplementation(() => {
+      return token
+    })
 
     await main.run()
     expect(runMock).toHaveReturned()
